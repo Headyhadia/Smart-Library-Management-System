@@ -1,7 +1,3 @@
-101,python,james,programming,yes
-102,java,,programming,yes
-103,javascript,,,yes
-,rust,,,yes
-104,philosophy,arthur,philosophy,yes
-105,psychology,,,yes
-
+101,Python,GuidoRossum,Programming,yes
+02,The Time Machine,H.G. Well,Scifi,yes
+03,C++,Denis Ritchie,Programming,yes

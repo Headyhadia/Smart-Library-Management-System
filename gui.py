@@ -71,14 +71,23 @@ class LibraryGUI:
 
         def submit():
             try:
-                output = addBook(entries["Book ID"].get(), entries["Title"].get(),
-                        entries["Author"].get(), entries["Genre"].get())
+                book_id = entries["Book ID"].get().strip()
+                title = entries["Title"].get().strip()
+                author = entries["Author"].get().strip()
+                genre = entries["Genre"].get().strip()
+
+                if not all([book_id, title, author, genre]):
+                    messagebox.showerror("Error", "All fields are required to add a book.")
+                    return
+
+                output = addBook(book_id, title, author, genre)
                 messagebox.showinfo("Book Added Successfully!", output)
             except Exception as e:
                 messagebox.showerror("Error", str(e))
 
         tk.Button(f, text="Add", command=submit).pack(pady=10)
         tk.Button(f, text="Back", command=lambda: self.show_frame("main")).pack(pady=10)
+
 
     # ---------------- REGISTER USER ----------------
     def setup_register_user(self):

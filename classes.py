@@ -2,12 +2,12 @@ from abc import ABC, abstractmethod # Base class for User
 import datetime
 
 class Book:
-    def __init__(self, book_id, title, author, genre):
+    def __init__(self, book_id, title, author, genre, availability="yes"):
         self.book_id = book_id
         self.title = title
         self.author = author
         self.genre = genre
-        self.__availability = "yes"  # use double underscore for private variable
+        self.__availability = availability # use double underscore for private variable
         self.due_date = None
 
     @property       # function to get availability
@@ -111,7 +111,13 @@ class FileManager:
         try:
             with open(self.__transactionFile, 'r') as file:
                 for line in file:
-                    record_id, user_id, book_id, borrow_date_s, due_date_s, return_date_s = line.strip().split(',')
+                    line = line.strip()
+                    if not line:
+                        continue  # skip empty lines
+                    parts = line.split(',')
+                    if len(parts) != 6:
+                        continue  # skip invalid lines
+                    record_id, user_id, book_id, borrow_date_s, due_date_s, return_date_s = parts
                     # find real objects if lists provided
                     user = next((u for u in users if str(u.id) == user_id), None) if users else None     # find user by id
                     book = next((b for b in books if str(b.book_id) == book_id), None) if books else None       # find book by id
@@ -145,15 +151,21 @@ class FileManager:
     def loadBooks(self):        # loads the list of books from the book file
         books = []
         try:
-            with open(self.__bookfile, 'r') as file:
-                for line in file:
-                    book_id, title, author, genre, availability = line.strip().split(',')
-                    book = Book(book_id, title, author, genre)
-                    book.availability = availability
-                    books.append(book)
+            with open("books.txt", "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:  # skip empty lines
+                        continue
+                    parts = line.split(",")
+                    if len(parts) != 5:  # malformed line, skip
+                        continue
+                    book_id, title, author, genre, availability = parts
+                    books.append(Book(book_id, title, author, genre, availability))
         except FileNotFoundError:
-            print(f"Book file {self.__bookfile} not found.")
+            # file doesn’t exist yet — just return empty list, no crash
+            return []
         return books
+
 
     def loadUsers(self):       # loads the list of users from the user file
         users = []
@@ -175,7 +187,7 @@ class FileManager:
             for line in f:
                 parts = line.strip().split(",")
                 if parts[0] == str(book.book_id):
-                    parts[4] = book.availability   # assuming 5th column is availability
+                    parts[4] = book.availability   
                     line = ",".join(parts)
                 lines.append(line.strip())
         with open("books.txt", "w") as f:
@@ -232,7 +244,9 @@ class Library:
             if user.requestBook(book):    # if user borrows book successfully..
                 book.markUnavailable()
                 self.__filemanager.updateBookAvailability(book)
-                record = BorrowRecord(len(self.__records) + 1, user, book, datetime.date.today())
+                next_id = max((r.record_id for r in self.__records), default=0) + 1
+                record = BorrowRecord(next_id, user, book, datetime.date.today())
+
                 self.__records.append(record)
                 self.__filemanager.saveTransaction(record)
                 msg += f"Book '{book.title.title()}' borrowed by user {user.name.title()}"
