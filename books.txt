@@ -4,8 +4,4 @@
 ,rust,,,yes
 104,philosophy,arthur,philosophy,yes
 105,psychology,,,yes
-105,art,,,yes
-105,art,van gogh,art,yes
-105,art,van gogh,art,yes
-105,art,van gogh,art,yes
-105,art,van gogh,,yes
+
