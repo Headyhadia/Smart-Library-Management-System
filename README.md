@@ -7,6 +7,7 @@ A simple Python-based library management system with a Tkinter GUI that lets use
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
+- [Project Demo](#project-demo)
 - [Project Structure](#project-structure)
 
 ## Features
@@ -33,6 +34,12 @@ A simple Python-based library management system with a Tkinter GUI that lets use
 
 - Launch the app.
 - Do all the operations using their buttons on main menu
+
+## Project Demo
+You can watch the demo video here: [Watch on Google Drive](https://drive.google.com/drive/folders/1eGUcBvDvdti5ZYa2Jh71J3x1fPECB5ID?usp=sharing)
+
+*(If the link doesn’t open directly, please copy and paste it into your browser.)*
+
 
 ## Project Structure
 
