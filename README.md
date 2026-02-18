@@ -42,7 +42,7 @@ You can watch the demo video here: [Watch on Google Drive](https://drive.google.
 
 
 ## Project Structure
-
+```
 📁 Smart-library-Management-system
 ├── classes.py
 ├── main.py
@@ -51,3 +51,4 @@ You can watch the demo video here: [Watch on Google Drive](https://drive.google.
 ├── users.txt
 └── transactions.txt
 └── README.md
+```
